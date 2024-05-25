@@ -17,7 +17,7 @@ function App() {
   return (
     <div className="dark">
       <SocketContext.Provider value={socket}>
-        <Router>
+        <Router basename="https://chat.siddamvamsee.in/">
           <Routes>
             <Route exact path="/" element={token ? <Home socket={socket} /> : <Navigate to="/login" />} />
             <Route exact path="/login" element={<Login />} />
