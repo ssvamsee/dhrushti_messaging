@@ -5,7 +5,7 @@ export default function DocumentIcon() {
       height="53"
       width="53"
       preserveAspectRatio="xMidYMid meet"
-      class=""
+      className=""
       version="1.1"
       x="0px"
       y="0px"

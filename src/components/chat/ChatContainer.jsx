@@ -5,8 +5,8 @@ import ChatMessages from './messages/ChatMessages'
 import { getConversationMessages } from '../../features/chatSlice'
 import { ChatActions } from './actions'
 import { checkOnlineStatus, getConversationId } from '../../utils/Chat'
-
-export default function ChatContainer({onlineUsers, typing}) {
+import FilesPreview from "./preview/files/FilesPreview"
+export default function ChatContainer({ onlineUsers, typing }) {
   const dispatch = useDispatch();
   const { activeConversation, files } = useSelector((state) => state.chat);
   const { user } = useSelector((state) => state.user);
@@ -25,8 +25,16 @@ export default function ChatContainer({onlineUsers, typing}) {
     <div className="relative w-full h-full border-l dark:border-l-dark_border_2 select-none overflow-hidden ">
       <div>
         <ChatHeader online={checkOnlineStatus(onlineUsers, user, activeConversation.users)} />
-        <ChatMessages typing = {typing}/>
-        <ChatActions />
+        {
+          files.length > 0 ? (
+            <FilesPreview/>
+          ) : (
+            <>
+              <ChatMessages typing={typing} />
+              <ChatActions />
+            </>
+          )
+        }
       </div>
     </div>
   )

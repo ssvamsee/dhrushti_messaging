@@ -26,7 +26,7 @@ export default function Message({ message, me }) {
         `}
         >
           {/*Message*/}
-          <p className="float-left h-full text-sm pb-4 pr-8">
+          <p className="float-left h-full text-sm pb-4 pr-8 select-text ">
             {message.message}
           </p>
           {/*Message Date*/}

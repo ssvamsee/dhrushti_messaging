@@ -2,10 +2,11 @@ import { useSelector } from "react-redux"
 import { DotsIcon, SearchLargeIcon } from "../../../svg"
 import { capitalize } from "../../../utils/String"
 import { getConversationName, getConversationPicture } from "../../../utils/Chat"
-export default function ChatHeader({ online }) {
+import SocketContext from "../../../context/SocketContext"
+
+function ChatHeader({ online,socket }) {
     const { activeConversation } = useSelector((state) => state.chat)
     const { user } = useSelector((state) => state.user);
-    const { name, picture } = activeConversation
 
     return (
         <div className="h-[59px] dark:bg-dark_bg_2 flex items-center p16 select-none">
@@ -28,9 +29,7 @@ export default function ChatHeader({ online }) {
                             {activeConversation.isGroup
                                 ? activeConversation.name
                                 : capitalize(
-                                    getConversationName(user, activeConversation.users).split(
-                                        " "
-                                    )[0]
+                                    getConversationName(user, activeConversation.users).split(" ")[0]
                                 )}
                         </h1>
                         <span className="text-xs dark:text-dark_svg_2">
@@ -55,3 +54,10 @@ export default function ChatHeader({ online }) {
         </div>
     )
 }
+
+const ChatHeaderWithSocket = (props) => (
+    <SocketContext.Consumer>
+      {(socket) => <ChatHeader {...props} socket={socket} />}
+    </SocketContext.Consumer>
+  );
+  export default ChatHeaderWithSocket;

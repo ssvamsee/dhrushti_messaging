@@ -212,6 +212,11 @@
   background: transparent !important;
 }
 
+.select-text {
+  user-select: text; /* Ensure text can be selected */
+}
+
+
 /*--- MenuList Scroollbar
   /* width */
 .css-1n6sfyn-MenuList::-webkit-scrollbar {

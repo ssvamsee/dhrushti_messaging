@@ -16,10 +16,10 @@ export default function PhotoAttachment() {
                 file.type !== "image/webp" &&
                 file.type !== "video/mp4" &&
                 file.type !== "video/mpeg" &&
+                file.type !== "video/webm" &&
                 file.type !== "image/webm"
             ) {
                 files = files.filter((item) => item.name !== file.name)
-                alert("Please upload an image file")
                 return;
             } else if (file.size > 1024 * 1024 * 10) {
                 files = files.filter((item) => item.name !== file.name);
@@ -31,7 +31,7 @@ export default function PhotoAttachment() {
                     dispatch(
                         addFiles({
                             file: file,
-                            imgData: e.target.result,
+                            fileData: e.target.result,
                             type: getFileType(file.type)
                         })
                     );
@@ -44,8 +44,8 @@ export default function PhotoAttachment() {
         <li>
             <button type='button' className='bg-[#BF59CF] rounded-full' onClick={() => inputRef.current.click()}>
                 <PhotoIcon />
-                <input type='file' hidden multiple ref={inputRef} accept='image/png,image/jpeg,image/gif,image/webp,video/mp4,video/mpeg' onChange={imageHandler} />
             </button>
+            <input type='file' hidden multiple ref={inputRef} accept='image/png,image/jpeg,image/gif,image/webp,video/mp4,video/mpeg' onChange={imageHandler} />
         </li>
     )
 }

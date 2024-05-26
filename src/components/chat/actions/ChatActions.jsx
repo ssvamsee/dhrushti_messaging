@@ -26,6 +26,9 @@ function ChatActions({socket}) {
     }
     const sendMessageHandler = async (e) => {
         e.preventDefault()
+        if (message.trim().length === 0) {
+            return;
+        }
         setLoading(true)
         let newMsg = await dispatch(sendMessage(values))
         socket.emit("send_message",newMsg.payload)
@@ -43,7 +46,7 @@ function ChatActions({socket}) {
                     <Attachments showAttachments={showAttachments} setShowAttchments={setShowAttachments} setShowPicker={setShowPicker} />
                 </ul>
                 <Input message={message} setMessage={setMessage} textRef={textRef} />
-                <button type='submit' className='btn'>
+                <button type='submit' className='btn' disabled={message.trim().length === 0 || (status === 'loading' && loading)}>
                     {
                         status === 'loading' && loading ? (
                             <ClipLoader color='#E9EDEF' size={25} />
