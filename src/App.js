@@ -11,7 +11,6 @@ const socket = io(process.env.REACT_APP_API_ENDPOINT)
 function App() {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
-  const { files } = useSelector((state) => state.user);
 
   const { token } = user;
   return (
@@ -21,8 +20,8 @@ function App() {
         {/* <Router> */}
           <Routes>
             <Route exact path="/" element={token ? <Home socket={socket} /> : <Navigate to="/login" />} />
-            <Route exact path="/login" element={<Login />} />
-            <Route exact path="/register" element={<Register />} />
+            <Route exact path="/login" element={!token ? <Login /> : <Navigate to="/"/>} />
+            <Route exact path="/register" element={!token ? <Register /> : <Navigate to="/"/>} />
           </Routes>
         </Router>
       </SocketContext.Provider>
