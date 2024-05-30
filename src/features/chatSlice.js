@@ -14,96 +14,99 @@ const initialState = {
   files: [],
 };
 
-export const getConversations = createAsyncThunk("conversation/all", async (token, { rejectWithValue }) => {
-  try {
-    const { data } = await axios.get(`${CONVERSATION_ENDPOINT}/getConversations`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return data;
-  } catch (error) {
-    return rejectWithValue(error.response.data.error.message);
-  }
-}
-);
-
-export const open_create_conversation = createAsyncThunk("conervsation/open_create", async (values, { rejectWithValue }) => {
-  const { token, receiver_id, isGroup } = values;
-  try {
-    const { data } = await axios.post(
-      `${CONVERSATION_ENDPOINT}/create-open-covo`,
-      { receiver_id, isGroup },
-      {
+export const getConversations = createAsyncThunk(
+  "conervsation/all",
+  async (token, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.get(`${CONVERSATION_ENDPOINT}/getConversations`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }
-    );
-    return data;
-  } catch (error) {
-    return rejectWithValue(error.response.data.error.message);
+      });
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.error.message);
+    }
   }
-}
 );
-
-export const getConversationMessages = createAsyncThunk("conervsation/messages", async (values, { rejectWithValue }) => {
-  const { token, convo_id } = values;
-  try {
-    const { data } = await axios.get(`${MESSAGE_ENDPOINT}/${convo_id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return data;
-  } catch (error) {
-    return rejectWithValue(error.response.data.error.message);
+export const open_create_conversation = createAsyncThunk(
+  "conervsation/open_create",
+  async (values, { rejectWithValue }) => {
+    const { token, receiver_id, isGroup } = values;
+    try {
+      const { data } = await axios.post(`${CONVERSATION_ENDPOINT}/create-open`,
+        { receiver_id, isGroup },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.error.message);
+    }
   }
-}
 );
-
-export const sendMessage = createAsyncThunk("message/send", async (values, { rejectWithValue }) => {
-  const { token, message, convo_id, files } = values;
-  try {
-    const { data } = await axios.post(
-      `${MESSAGE_ENDPOINT}/sendMessage`,
-      {
-        message,
-        convo_id,
-        files,
-      },
-      {
+export const getConversationMessages = createAsyncThunk(
+  "conervsation/messages",
+  async (values, { rejectWithValue }) => {
+    const { token, convo_id } = values;
+    try {
+      const { data } = await axios.get(`${MESSAGE_ENDPOINT}/${convo_id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }
-    );
-    return data;
-  } catch (error) {
-    return rejectWithValue(error.response.data.error.message);
+      });
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.error.message);
+    }
   }
-}
 );
-
-export const createGroupConversation = createAsyncThunk("conervsation/create_group", async (values, { rejectWithValue }) => {
-  const { token, name, users } = values;
-  try {
-    const { data } = await axios.post(
-      `${CONVERSATION_ENDPOINT}/group`,
-      { name, users },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
+export const sendMessage = createAsyncThunk(
+  "message/send",
+  async (values, { rejectWithValue }) => {
+    const { token, message, convo_id, files } = values;
+    try {
+      const { data } = await axios.post(`${MESSAGE_ENDPOINT}/sendMessage`,
+        {
+          message,
+          convo_id,
+          files,
         },
-      }
-    );
-    return data;
-  } catch (error) {
-    return rejectWithValue(error.response.data.error.message);
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.error.message);
+    }
   }
-}
 );
-
+export const createGroupConversation = createAsyncThunk(
+  "conervsation/create_group",
+  async (values, { rejectWithValue }) => {
+    const { token, name, users } = values;
+    try {
+      const { data } = await axios.post(
+        `${CONVERSATION_ENDPOINT}/createGroup`,
+        { name, users },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.error.message);
+    }
+  }
+);
 export const chatSlice = createSlice({
   name: "chat",
   initialState,
@@ -112,12 +115,10 @@ export const chatSlice = createSlice({
       state.activeConversation = action.payload;
     },
     updateMessagesAndConversations: (state, action) => {
-      //update messages
       let convo = state.activeConversation;
       if (convo._id === action.payload.conversation._id) {
         state.messages = [...state.messages, action.payload];
       }
-      //update conversations
       let conversation = {
         ...action.payload.conversation,
         latestMessage: action.payload,

@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { signUpSchema } from "../../utils/Validations.js";
-import AuthInput from "./AuthInputs.jsx";
+import { signUpSchema } from "../../utils/validation";
+import AuthInput from "./AuthInput";
 import { useDispatch, useSelector } from "react-redux";
 import PulseLoader from "react-spinners/PulseLoader";
 import { Link, useNavigate } from "react-router-dom";
@@ -17,20 +17,10 @@ export default function RegisterForm() {
   const { status, error } = useSelector((state) => state.user);
   const [picture, setPicture] = useState();
   const [readablePicture, setReadablePicture] = useState("");
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm({
-    resolver: yupResolver(signUpSchema),
-  });
+  const { register, handleSubmit, watch, formState: { errors }, } = useForm({ resolver: yupResolver(signUpSchema), });
   const onSubmit = async (data) => {
-    console.log("Form Submitted", data);
-
     dispatch(changeStatus("loading"));
     if (picture) {
-      //upload to cloudinary and then register user
       await uploadImage().then(async (response) => {
         let res = await dispatch(
           registerUser({ ...data, picture: response.secure_url })
@@ -46,7 +36,6 @@ export default function RegisterForm() {
       }
     }
   };
-
   const uploadImage = async () => {
     let formData = new FormData();
     formData.append("upload_preset", cloud_secret);

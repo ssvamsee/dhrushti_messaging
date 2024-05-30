@@ -1,4 +1,4 @@
-export default function DownloadIcon({ className, fill }) {
+export default function DownloadIcon({ className }) {
   return (
     <svg
       viewBox="0 0 34 34"
@@ -10,8 +10,6 @@ export default function DownloadIcon({ className, fill }) {
       y="0px"
       enableBackground="new 0 0 34 34"
       xmlSpace="preserve"
-      className={className}
-      fill={fill}
     >
       <path
         fill="#8696A0"
